@@ -1,0 +1,5 @@
+# Tested on Python 3.12.15 / macOS CPU. Select appropriate GPU wheels separately.
+torch==2.5.1
+torchvision==0.20.1
+numpy==2.5.3
+pytest==9.1.1

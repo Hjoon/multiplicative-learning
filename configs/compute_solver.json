@@ -1,0 +1,78 @@
+{
+  "name": "compute_solver",
+  "description": "CIFAR10 ER local-solver implementation comparison.",
+  "base": {
+    "output_root": "./results",
+    "save_model": false,
+    "ridge_lambda": 0.1,
+    "ridge_relative": true,
+    "ridge_strategy": "auto",
+    "solve_dtype": "float32",
+    "dataset": "cifar10",
+    "batch_size": 4096,
+    "max_steps": 7500,
+    "log_er_layers": false,
+    "diag_every": 0,
+    "diag_every_epochs": null,
+    "data_root": "./data"
+  },
+  "cases": [
+    {
+      "optimizer": "er",
+      "ridge_strategy": "primal",
+      "tag": "chol32_primal",
+      "label": "Chol32 primal"
+    },
+    {
+      "optimizer": "er",
+      "ridge_strategy": "dual",
+      "tag": "chol32_dual",
+      "label": "Chol32 dual"
+    },
+    {
+      "optimizer": "er",
+      "ridge_strategy": "auto",
+      "tag": "chol32_auto",
+      "label": "Chol32 auto"
+    },
+    {
+      "optimizer": "pcg32_10",
+      "ridge_strategy": "auto",
+      "tag": "pcg32_10",
+      "label": "PCG32_10 auto"
+    }
+  ],
+  "grid": {
+    "seed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "notes": {
+    "reference_train_size": 50000,
+    "reference_batch_size": 2000,
+    "reference_steps_per_old_epoch": 25,
+    "mnist": {
+      "adam_rmsprop": 10000,
+      "sgd_sgdm": 25000,
+      "er_chol32_pcg10": 12500
+    },
+    "cifar10": {
+      "adam_rmsprop": 15000,
+      "sgd_sgdm": 37500,
+      "er_chol32_pcg10": 7500
+    },
+    "logging": "step 0 initialization; steps 1..9; 10,20,..,90; 100,200,...; final always retained",
+    "default_batch_size": 4096,
+    "data": "PROJECT/data; complete train/test tensors are preloaded to the target device once per run",
+    "wall_clock": "one synchronized timer from before step-0 evaluation through final evaluation; reported as total and total/optimization_steps"
+  }
+}

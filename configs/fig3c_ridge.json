@@ -1,0 +1,105 @@
+{
+  "name": "fig3c",
+  "description": "MNIST relative-ridge sensitivity; lambda_rel=0.1 is the ER default.",
+  "base": {
+    "output_root": "./results",
+    "save_model": false,
+    "ridge_lambda": 0.1,
+    "ridge_relative": true,
+    "ridge_strategy": "auto",
+    "solve_dtype": "float32",
+    "dataset": "mnist",
+    "batch_size": 4096,
+    "data_root": "./data",
+    "diag_every": 0,
+    "diag_every_epochs": null,
+    "log_er_layers": false,
+    "target_value": 1.0,
+    "secant_clip": null,
+    "secant_small_series": true
+  },
+  "cases": [
+    {
+      "optimizer": "er",
+      "max_steps": 12500,
+      "ridge_lambda": 0.001,
+      "tag": "er_ridge_0.001",
+      "label": "ER lambda_rel=0.001"
+    },
+    {
+      "optimizer": "er",
+      "max_steps": 12500,
+      "ridge_lambda": 0.01,
+      "tag": "er_ridge_0.01",
+      "label": "ER lambda_rel=0.01"
+    },
+    {
+      "optimizer": "er",
+      "max_steps": 12500,
+      "ridge_lambda": 0.1,
+      "tag": "er_ridge_0.1",
+      "label": "ER lambda_rel=0.1"
+    },
+    {
+      "optimizer": "er",
+      "max_steps": 12500,
+      "ridge_lambda": 1.0,
+      "tag": "er_ridge_1",
+      "label": "ER lambda_rel=1"
+    },
+    {
+      "optimizer": "er",
+      "max_steps": 12500,
+      "ridge_lambda": 10.0,
+      "tag": "er_ridge_10",
+      "label": "ER lambda_rel=10"
+    },
+    {
+      "optimizer": "adam",
+      "max_steps": 10000,
+      "lr": 0.001,
+      "tag": "adam_default",
+      "label": "Adam default"
+    },
+    {
+      "optimizer": "sgd",
+      "max_steps": 25000,
+      "lr": 0.05,
+      "tag": "sgd_default",
+      "label": "SGD default"
+    }
+  ],
+  "grid": {
+    "seed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "notes": {
+    "reference_train_size": 50000,
+    "reference_batch_size": 2000,
+    "reference_steps_per_old_epoch": 25,
+    "mnist": {
+      "adam_rmsprop": 10000,
+      "sgd_sgdm": 25000,
+      "er_chol32_pcg10": 12500
+    },
+    "cifar10": {
+      "adam_rmsprop": 15000,
+      "sgd_sgdm": 37500,
+      "er_chol32_pcg10": 7500
+    },
+    "logging": "step 0 initialization; steps 1..9; 10,20,..,90; 100,200,...; final always retained",
+    "default_batch_size": 4096,
+    "data": "PROJECT/data; complete train/test tensors are preloaded to the target device once per run",
+    "wall_clock": "one synchronized timer from before step-0 evaluation through final evaluation; reported as total and total/optimization_steps"
+  }
+}

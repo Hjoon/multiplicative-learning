@@ -1,0 +1,54 @@
+{
+  "name": "fig4",
+  "description": "Representative ER-1 numerical-stability diagnostic on MNIST, B=1024 (seed 0), with logarithmically sparse early-to-late step logging.",
+  "base": {
+    "output_root": "./results",
+    "save_model": false,
+    "ridge_lambda": 0.1,
+    "ridge_relative": true,
+    "ridge_strategy": "auto",
+    "solve_dtype": "float32",
+    "dataset": "mnist",
+    "optimizer": "er1",
+    "batch_size": 1024,
+    "max_steps": 3000,
+    "log_er_layers": false,
+    "diag_every": 0,
+    "diag_every_epochs": null,
+    "data_root": "./data",
+    "eval_schedule": "sparse",
+    "target_value": 1.0,
+    "secant_clip": null,
+    "secant_small_series": true,
+    "diag_schedule": "sparse"
+  },
+  "grid": {
+    "seed": [
+      0
+    ]
+  },
+  "notes": {
+    "reference_train_size": 60000,
+    "reference_batch_size": 2000,
+    "reference_steps_per_old_epoch": 25,
+    "mnist": {
+      "adam_rmsprop": 10000,
+      "sgd_sgdm": 25000,
+      "er_chol32_pcg10": 12500
+    },
+    "cifar10": {
+      "adam_rmsprop": 15000,
+      "sgd_sgdm": 37500,
+      "er_chol32_pcg10": 7500
+    },
+    "logging": "step 0 initialization/evaluation; diagnostics and evaluation at steps 1..9, 10,20,..,90, 100,200,..., and final.",
+    "svd_diagnostics": "FP32 matrix/SVD diagnostics at the same sparse optimization-step schedule as Fig.4 presentation.",
+    "default_batch_size": 1024,
+    "data": "PROJECT/data; complete train/test tensors are preloaded to the target device once per run",
+    "wall_clock": "one synchronized timer from before step-0 evaluation through final evaluation; reported as total and total/optimization_steps",
+    "dataset_revision": "Revised from CIFAR10/B=4096 to MNIST/B=1024; max_steps remains 7500.",
+    "evaluation": "full train/test metrics at step 0, steps 1..9, 10..90 by 10, 100 onward by 100, and final.",
+    "finite_check": "no every-step host finite check; stable run is checked at endpoint while diagnostic steps retain SVD/layer materialization",
+    "representative_run_revision": "seed 0 x 3000 steps; Fig.4 diagnostic and evaluation logging use the sparse schedule 0, 1..9, 10..90 by 10, 100.. by 100."
+  }
+}

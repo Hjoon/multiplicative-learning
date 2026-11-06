@@ -1,0 +1,106 @@
+{
+  "name": "tp_dtp",
+  "description": "Fig.2 optimizer comparison on MNIST, Fashion-MNIST, and CIFAR-10: ER Algorithm 0 vs Algorithm 1 and gradient baselines with the existing long-run optimization-step budgets.",
+  "base": {
+    "output_root": "./results",
+    "save_model": false,
+    "ridge_lambda": 0.1,
+    "ridge_relative": true,
+    "ridge_strategy": "auto",
+    "solve_dtype": "float32",
+    "batch_size": 4096,
+    "data_root": "./data",
+    "diag_every": 0,
+    "diag_every_epochs": null,
+    "log_er_layers": false,
+    "target_value": 1.0,
+    "secant_clip": null,
+    "secant_small_series": true
+  },
+  "cases": [
+    {
+      "dataset": "mnist",
+      "optimizer": "tp",
+      "max_steps": 25000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    },
+    {
+      "dataset": "mnist",
+      "optimizer": "dtp",
+      "max_steps": 25000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    },
+    {
+      "dataset": "fashionmnist",
+      "optimizer": "tp",
+      "max_steps": 25000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    },
+    {
+      "dataset": "fashionmnist",
+      "optimizer": "dtp",
+      "max_steps": 25000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    },
+    {
+      "dataset": "cifar10",
+      "optimizer": "tp",
+      "max_steps": 15000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    },
+    {
+      "dataset": "cifar10",
+      "optimizer": "dtp",
+      "max_steps": 15000,
+      "tag": "er1_chol32",
+      "label": "ER-1"
+    }
+  ],
+  "grid": {
+    "seed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "notes": {
+    "reference_train_size": 50000,
+    "reference_batch_size": 2000,
+    "reference_steps_per_old_epoch": 25,
+    "mnist": {
+      "adam_rmsprop": 20000,
+      "sgd_sgdm": 100000,
+      "er0_er1": 25000
+    },
+    "cifar10": {
+      "adam_rmsprop": 30000,
+      "sgd_sgdm": 150000,
+      "er0_er1": 15000
+    },
+    "logging": "step 0 initialization; steps 1..9; 10,20,..,90; 100,200,...; final always retained",
+    "default_batch_size": 4096,
+    "data": "PROJECT/data; complete train/test tensors are preloaded to the target device once per run",
+    "wall_clock": "one synchronized timer from before step-0 evaluation through final evaluation; reported as total and total/optimization_steps",
+    "er_variants": "er0 = fixed corrected-state regressors (Algorithm 0); er1 = sequential realized forward recomputation (Algorithm 1).",
+    "budget_revision_20260904": "All Fig.2 optimizer max_steps doubled relative to the previous sweep.",
+    "fashionmnist": {
+      "adam_rmsprop": 20000,
+      "sgd_sgdm": 100000,
+      "er0_er1": 25000,
+      "rationale": "Same 60,000-sample, 784-dimensional geometry as MNIST; use the MNIST Fig.2 budgets for a matched comparison."
+    },
+    "fig2_datasets_20260907": "Added Fashion-MNIST as the middle Fig.2 panel; 10 seeds per optimizer."
+  }
+}

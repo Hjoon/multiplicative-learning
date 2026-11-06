@@ -1,0 +1,120 @@
+{
+  "name": "fig3a",
+  "description": "MNIST ER batch-size sensitivity with fixed optimization-step budgets.",
+  "base": {
+    "output_root": "./results",
+    "save_model": false,
+    "ridge_lambda": 0.1,
+    "ridge_relative": true,
+    "ridge_strategy": "auto",
+    "solve_dtype": "float32",
+    "dataset": "mnist",
+    "data_root": "./data",
+    "diag_every": 0,
+    "diag_every_epochs": null,
+    "log_er_layers": false,
+    "target_value": 1.0,
+    "secant_clip": null,
+    "secant_small_series": true
+  },
+  "cases": [
+    {
+      "optimizer": "er",
+      "batch_size": 128,
+      "max_steps": 12500,
+      "tag": "er_b128",
+      "label": "ER B=128"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": 256,
+      "max_steps": 12500,
+      "tag": "er_b256",
+      "label": "ER B=256"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": 512,
+      "max_steps": 12500,
+      "tag": "er_b512",
+      "label": "ER B=512"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": 1024,
+      "max_steps": 12500,
+      "tag": "er_b1024",
+      "label": "ER B=1024"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": 2048,
+      "max_steps": 12500,
+      "tag": "er_b2048",
+      "label": "ER B=2048"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": 4096,
+      "max_steps": 12500,
+      "tag": "er_b4096",
+      "label": "ER B=4096"
+    },
+    {
+      "optimizer": "er",
+      "batch_size": -1,
+      "max_steps": 12500,
+      "tag": "er_full",
+      "label": "ER full"
+    },
+    {
+      "optimizer": "adam",
+      "batch_size": 4096,
+      "max_steps": 10000,
+      "lr": 0.001,
+      "tag": "adam_b4096",
+      "label": "Adam B=4096"
+    },
+    {
+      "optimizer": "sgd",
+      "batch_size": 4096,
+      "max_steps": 25000,
+      "lr": 0.05,
+      "tag": "sgd_b4096",
+      "label": "SGD B=4096"
+    }
+  ],
+  "grid": {
+    "seed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "notes": {
+    "reference_train_size": 50000,
+    "reference_batch_size": 2000,
+    "reference_steps_per_old_epoch": 25,
+    "mnist": {
+      "adam_rmsprop": 10000,
+      "sgd_sgdm": 25000,
+      "er_chol32_pcg10": 12500
+    },
+    "cifar10": {
+      "adam_rmsprop": 15000,
+      "sgd_sgdm": 37500,
+      "er_chol32_pcg10": 7500
+    },
+    "logging": "step 0 initialization; steps 1..9; 10,20,..,90; 100,200,...; final always retained",
+    "default_batch_size": 4096,
+    "data": "PROJECT/data; complete train/test tensors are preloaded to the target device once per run",
+    "wall_clock": "one synchronized timer from before step-0 evaluation through final evaluation; reported as total and total/optimization_steps"
+  }
+}
