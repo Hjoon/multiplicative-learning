@@ -1,0 +1,20 @@
+{
+  "python": "3.11.14",
+  "packages": {
+    "torch": "2.5.1",
+    "torchvision": "0.20.1",
+    "numpy": "2.4.2",
+    "matplotlib": "3.10.8",
+    "pandas": "2.3.3",
+    "scipy": "1.17.1",
+    "pytest": "9.1.1"
+  },
+  "paper_runtime": {
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "cuda": "12.1",
+    "execution": "sequential scalar individual-run",
+    "OMP_NUM_THREADS": 2,
+    "MKL_NUM_THREADS": 2
+  },
+  "note": "Python/package versions queried from the campaign environment; GPU and CUDA context recorded during the scalar validation and diagnostic replays."
+}

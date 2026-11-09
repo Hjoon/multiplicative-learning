@@ -1,111 +1,131 @@
 # Multilayer Multiplicative Learning
 
-Minimal, sequential code for generating experimental data. This directory is
-self-contained: copy it as the root of the repository you share. No parent
-checkout, historical results, notebook, server account, or cluster is required.
+Scalar reference code for *Multilayer Multiplicative Learning from
+Observation-Prediction Ratios via Pseudoinverse Target Propagation*.
+The full individual-run paper campaign completed on 2026-11-08.
+Its configuration, metrics and runtime define the paper reproduction baseline.
 
-Use Python 3.10–3.12 and install a matching PyTorch/torchvision pair:
+Current completion and validation record: [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
+## Install and check
+
+Use Python 3.10-3.12 and a matching PyTorch/torchvision installation:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e '.[test]'
+pip install -e '.[paper,test]'
 python -m pytest -q
 python run.py smoke --output results/smoke
-python run.py sweep --config configs/fig2_optimizer_comparison.json --dry-run
-python run.py sweep --config configs/fig2_optimizer_comparison.json --device cuda:0
-python run.py sweep --config configs/mse_ce.json --device cuda:0
-python run.py sweep --config configs/tp_dtp.json --device cuda:0
-python run.py export
 ```
 
-Run commands from this directory. CPU is the default; pass `--device cuda:0`
-for a GPU. `--limit 1` runs the first complete trial, with its full scientific
-budget. `--dry-run` validates/expands configurations without downloading data or
-creating output files. `smoke` uses tiny synthetic data and 6 updates for each
-of 12 method/objective combinations; it is not a scientific experiment.
+The `paper` extra adds Matplotlib, pandas and SciPy. Omit it for training only.
+The tested paper environment is recorded in `validation/environment.json`, with
+exact analysis package versions in `requirements-paper.txt`. GPU measurements
+used PyTorch 2.5.1, CUDA 12.1 and an RTX 4090. Choose a PyTorch build suitable for
+your platform; the package-version file does not install a GPU driver.
 
-## Experiment configurations
+## Generate experiment data
 
-| JSON in `configs/` | Purpose |
-| --- | --- |
-| `fig2_optimizer_comparison.json` | MNIST, Fashion-MNIST, CIFAR-10; ER-0/ER-1 and four gradient methods; 10 seeds; 180 runs |
-| `mse_ce.json` | Paired MSE/CE gradient controls on all three datasets; 240 runs |
-| `tp_dtp.json` | Absolute TP and difference-corrected TP; 60 runs |
-| `fig3a_batch_main.json` | Batch-size sensitivity |
-| `fig3b_step_mix.json` | ER mixing sensitivity |
-| `fig3c_ridge.json` | Ridge sensitivity |
-| `fig4_stability.json` | Stability trajectories and diagnostics |
-| `table_stability_ablation.json` | Direct pseudoinverse versus ridge; includes failed runs |
-| `compute_solver.json` | Exact versus approximate local solver comparison |
-
-Each JSON preserves the source experiment settings. Effective defaults are
-expanded into the manifest and each run's config, including architecture,
-learning rate, batch size, seed, and step budget. JSON `grid` entries form a
-Cartesian product; `setups` groups coupled parameters. No parameter tuning is
-performed automatically. Figure filenames are historical experiment identifiers;
-consult the actual dataset/config values rather than older manuscript captions.
-
-## Outputs and execution
-
-Datasets are downloaded by torchvision into `data/` on the first real run.
-Entire flattened train/test sets reside on the selected device. Full sweeps are
-expensive; dataset memory plus the ER solve must fit on that device.
-
-- `results/manifests/<config>.json`: resolved configurations and source-based IDs.
-- `results/runs/<id>/`: effective config, status, trajectory, and diagnostics.
-- `results/accuracy.csv`: long-form accuracy data (`run_id`, dataset, optimizer,
-  seed, loss, status, step, split, accuracy).
-- `results/manifests/<config>-failures.json`: caught failures for configurations
-  that explicitly request `continue_on_error` (numerical stability experiments).
-
-Per-run original MSE experiments write `eval.csv`, `train_steps.csv`, optional
-`er_layers.csv`, `summary.json`, `config.json`, and `identity.json`. Objective
-controls and TP/dTP write `record.json`, `metrics.json`, and `checkpoint.pt`.
-Completed runs are cached. Interrupted original experiments restart; controls
-resume at saved epoch boundaries. Do not load untrusted checkpoint files.
-Smoke artifacts are omitted from the CSV export. Failed original runs may have
-partial trajectories: always filter on status for final-accuracy comparisons,
-and count failures separately for stability analysis.
-
-The two small execution cores are retained to preserve the original diagnostic
-implementation and the later objective/target controls. ER mathematical code is
-copied from the source implementations. CE trains and evaluates pre-tanh logits;
-MSE and ER use tanh outputs. Seeds and model initialization follow the original
-data-preload ordering. Sequential execution replaces server packing; floating
-point differences from packed GPU execution are possible. Wall times from the
-two runners have different logging/checkpoint overheads and should not be pooled.
-
-## Figures and reproducibility
-
-Figure notebooks are not required for running these experiments and are omitted.
-This release exports the raw trajectories needed for independent plots. A small
-plot script or cleaned notebook can be added later to reproduce exact publication
-styling and statistical summaries. This code-only package does not yet reproduce
-the publication PDFs automatically.
-
-Software smoke tests do not establish numerical reproduction of the paper.
-Full-budget experiments, comparison against the final paper tables/figures, and
-GPU validation remain necessary. No historical result data or dataset is bundled.
-
-## Comparing against paper reference values
-
-`validation/paper_reference.json` contains anonymized per-seed endpoints from
-the results used for the current manuscript: 180 Fig.2 trials, 240 MSE/CE
-controls, 60 TP/dTP trials, and 1,381 sensitivity/stability trials (including
-316 recorded numerical failures). These are reference measurements, not fresh
-reproduction outputs. Original configurations are retained for matching.
+Run from the repository root. CPU is the default; specify `--device cuda:0` for
+a GPU. Data are downloaded by torchvision into `data/` on first use and reside
+on the selected device throughout each run.
 
 ```bash
-python verify.py --output results --tolerance-pp 0.5
+python run.py sweep --config configs/fig2_optimizer_comparison.json --dry-run
+python run.py sweep --config configs/fig2_optimizer_comparison.json --device cuda:0
 ```
 
-The checker writes `results/verification.json` and exits nonzero while any
-reference is missing, pending, has a different failure status/step budget, or
-exceeds the chosen endpoint tolerance. It reports best and final test accuracy
-deltas separately. The default 0.5 percentage-point tolerance is a screening
-threshold, not a statistical equivalence test; use zero for exact endpoint
-agreement. Every matching execution backend is reported. Solver timing,
-analytical memory estimates, paired significance tables and target-crossing
-statistics require separate analysis and are not certified by endpoint checks.
-The compute-solver sweep has no bundled paper reference and is exploratory.
+Run the remaining paper sweeps with the same command and the appropriate JSON:
+
+| Configuration | Purpose |
+| --- | --- |
+| `fig2_optimizer_comparison.json` | 180 trials; three datasets, six optimizers, ten seeds |
+| `mse_ce.json` | 240 paired objective-control trials |
+| `tp_dtp.json` | 60 TP/DTP trials |
+| `fig3a_batch_main.json` | Batch sensitivity |
+| `fig3b_step_mix.json` | Mixing sensitivity, including unstable settings |
+| `fig3c_ridge.json` | Ridge sensitivity |
+| `fig4_stability.json` | Layerwise diagnostic trajectory |
+| `table_stability_ablation.json` | 1,200 solver-stress trials, including numerical failures |
+
+`compute_solver.json` is exploratory and is not part of the adopted paper
+baseline. `--limit 1` runs one full-budget trial; it does not shorten its budget.
+`smoke` runs twelve tiny synthetic method/objective checks without downloading
+a dataset. Smoke results are not scientific measurements.
+
+Each JSON defines `base`, `cases`, optional coupled `setups`, and a Cartesian
+`grid`. Effective settings and seeds are saved in `results/manifests/` and each
+run directory. Trials execute sequentially in separate processes. Completed
+trials are cached; interrupted original-core trials restart, while objective
+and TP/DTP trials resume from epoch-boundary checkpoints. Never load untrusted
+checkpoints. No server dispatcher or notebook is needed.
+
+## Recreate the paper figures and tables
+
+After all eight paper sweeps finish:
+
+```bash
+python -m paper_tools tables --results results --output results/paper
+python -m paper_tools render --results results --output results/paper
+```
+
+`tables` writes per-seed and aggregate CSVs, paired tests, and LaTeX table bodies.
+`render` writes those tables plus vector PDF and PNG versions of all six
+experimental figures. Naming follows the current manuscript:
+
+- `Fig2`: main optimizer comparison; `Fig3`: sensitivity.
+- `FigA1`: six-method accuracy/MSE; `FigA2`: MSE versus CE.
+- `FigA3`: layerwise numerical stability; `FigA4`: TP versus DTP.
+
+Fig1 is a conceptual diagram, not a data-derived plot, and is not generated.
+Mean/SE, temporal bins, paired confidence intervals and failure handling match
+the adopted manuscript. The CLI preserves unstable partial trajectories where
+required; it does not silently substitute survivor-only curves. Input file checksums and run provenance are saved with each rendering.
+
+## Verify against the adopted paper baseline
+
+```bash
+python verify.py --output results
+# Exact endpoint regression on the recorded runtime/data:
+python verify.py --output results --tolerance-pp 0
+```
+
+The default is `validation/paper_reference.json.gz`: 1,861 unique paper trials,
+including 338 expected numerical failures. It identifies the execution core and
+keeps the original-core MSE runs separate from objective-control MSE runs.
+Missing runs, wrong budgets, unexpected failure types, ambiguous matches and
+endpoint differences cause a nonzero exit. The report is written to
+`results/verification.json`. The default 0.5-percentage-point tolerance is a
+screening threshold, not a statistical equivalence test.
+
+This is a frozen regression baseline for the paper campaign, rather than an
+independent rerun. See `VALIDATION.md` for the completed campaign and checks.
+Timing is hardware-dependent; compare it separately from accuracy.
+
+## Minimal local preservation
+
+```bash
+python -m paper_tools archive --results results \
+  --destination results/archives/paper_scalar_minimal.tar.gz
+```
+
+The archive contains only paper manifests/configs, status and compact failure
+records, metric trajectories, the one required layer-diagnostic CSV, timing
+summaries, environment metadata, reference values and checksums. It excludes
+checkpoints, model weights, datasets, `train_steps.csv`, full tracebacks,
+exploratory runs, paper PDFs and generated figure attachments. It is stored
+locally, not published as a paper-result or release attachment. Existing archive
+files are never overwritten.
+
+`data/` and `results/` remain Git-ignored. The repository contains source,
+configuration and small regression-reference metadata, not the full campaign
+outputs. A local minimal archive can reconstruct the result tree for verification
+and replotting without training or checkpoint loading.
+
+## License and citation
+
+The software is available under the MIT license; see `LICENSE` and `NOTICE`.
+There are no additional scientific-use restrictions. Citation is requested for
+attribution, not as a license condition. `CITATION.cff` records the software and
+manuscript authors. Third-party dependencies and datasets retain their own terms.

@@ -1,4 +1,10 @@
 {
+  "CITATION.cff": "d442bad0039268827cb27bacd04faf94143fc2df981fa82dafbfa6e64b977662",
+  "LICENSE": "82ff1b62ffb4db6ef23b8645368b56a252872a842ca3e6f982e530c3c73882e4",
+  "NOTICE": "07cdff0eedfabff68b901f514a3ec949cd7f398deda53ca3868b7c4e3abce11c",
+  "PROJECT_STATUS.md": "63179f4bf6ce14dfd75a0de4af262d5fd433a48e3292f3e5b1b0f0edf8a1df6d",
+  "README.md": "63f6c5b656fb3bbc51518e146e4af4843850dd5be9b1340842b6e5e32dce1c53",
+  "VALIDATION.md": "918e29ca2389e32591fcff9952c486857ef6ecac9337a3571cb1084caffb74b1",
   "configs/compute_solver.json": "f56fd5cd9e8240d37ac7720fad6bdf9235239c14b9fc39da163b1bcaaffda3a1",
   "configs/fig2_optimizer_comparison.json": "458e00ededf227e7d31468794919a55be2d274eee18459bd89a5a6410491a284",
   "configs/fig3a_batch_main.json": "95c2fbb3299265684a3fb1f69d1c1b7bcbdca3d7ead05fa1c5ae888db6e41faf",
@@ -25,6 +31,21 @@
   "multlearning/objectives.py": "831c57cd40a3d80418d2289289e9dcb291dbe70edb29a4c68658f3967739eb9f",
   "multlearning/targets.py": "1e926b700fc56c699f2fdb52aac08a1b56520d75e7b108b2d8fccca7ab6449b1",
   "multlearning/utils.py": "c2de2441e6d42c46c37bfebb2dbaa43cf45d1399d5024d237fea604f7be80c3f",
+  "paper_tools/__init__.py": "bceb2c1ff1cfc70b54b907a5c4b4bb1091f003dfcbd771e874c1579927fc54a1",
+  "paper_tools/__main__.py": "9ee9369f2b0c23d8ed569a86b045370d60f760eef5c0a79c9e1b8360881c0d5c",
+  "paper_tools/archive.py": "8b55da6f1cc750d536543d644811a54ea462e70e5582f47001770c13819c46df",
+  "paper_tools/common.py": "a7875102182fffabce1d95ed3f234223a0ea3a6841c4f9c17ee979eda0bab341",
+  "paper_tools/data.py": "13a9593363f6ea986ae06f3966e59e8e03345e18745e4576e75b04c1631c6fda",
+  "paper_tools/diagnostics.py": "5c70492a772197b6c22e799e8d5353ec183ff0557d6fb2448d59a349004029e2",
+  "paper_tools/memory.py": "8c2474e948b0e6b5bdfb79ee63140550d68c10c47f8de21e6aca1bb134a0d1c8",
+  "paper_tools/reference.py": "a0318645279d52c57eb12d01f507632651518892d29cda3284a22b054480ef2d",
+  "paper_tools/style.py": "df139412465f9a8aa8fc7308bcb3793387ac3d552556aaf30fd91fd8afb29c16",
+  "paper_tools/tables.py": "042875ea7cca218fdd3372de21d4659aa2e3083af2706ab8b583d703f395d6f2",
+  "pyproject.toml": "ea4b1e01d1821bf2471415b78b9aa202c89f7d2396b21060ad44bed8ded6c7a0",
+  "requirements-paper.txt": "345f3a7658f817a3e28eb209fe72bb7820bf00bf1e4451bef7a723a34b023020",
   "run.py": "2da3e39e48395b8ccb3f17cde5aae8611be00c040ae7e2fef2c65c87481b99cb",
-  "verify.py": "47c73a72bcf15acbf15508cb2aaf031d295d248f5a090ce5bd50e8b6ce641831"
+  "validation/environment.json": "cdbafa78d399a2979a399a1c06c6496b0d71e7bc6823784a4749b4a037d25ef3",
+  "validation/paper_baseline.json": "95384800205885f1ee600dcdb39964c3b82d5d945c00dd452eae061947503708",
+  "validation/paper_reference.json.gz": "75b33cbb59739e9a7a854559f3098cc4b6568046522a7f3de977b78e04371532",
+  "verify.py": "aedd864af9445081879804f4dff5b2ac81eb6e7cb0a0919c443166e122fb6750"
 }

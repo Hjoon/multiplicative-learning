@@ -1,0 +1,35 @@
+{
+  "checked_on": "2026-11-09",
+  "tests": {
+    "passed": 12,
+    "failed": 0,
+    "log": "results/release_tests.log"
+  },
+  "adopted_reference": {
+    "file": "validation/paper_reference.json.gz",
+    "sha256": "75b33cbb59739e9a7a854559f3098cc4b6568046522a7f3de977b78e04371532",
+    "trials": 1861,
+    "exact_completed": 1523,
+    "expected_failures": 338,
+    "tolerance_pp": 0
+  },
+  "paper_render": {
+    "figures": [
+      "Fig2",
+      "Fig3",
+      "FigA1",
+      "FigA2",
+      "FigA3",
+      "FigA4"
+    ],
+    "all_pixels_equal_to_adopted_figures": true,
+    "numeric_table_rows_checked": 33,
+    "standalone_module": "paper_tools",
+    "notebook_execution": false,
+    "parent_repository_imports": false
+  },
+  "scientific_sources_changed": false,
+  "license": "MIT",
+  "paper_result_attachments": false,
+  "archive_exclusion_test_passed": true
+}

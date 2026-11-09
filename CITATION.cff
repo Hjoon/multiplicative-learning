@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite this repository and the accompanying manuscript."
+type: software
+title: "Multilayer Multiplicative Learning from Observation-Prediction Ratios via Pseudoinverse Target Propagation"
+version: 0.1.0
+authors:
+  - family-names: Kim
+    given-names: Han
+  - family-names: Soh
+    given-names: Hyungjoon
+  - family-names: Periwal
+    given-names: Vipul
+  - family-names: Jo
+    given-names: Junghyo
+    orcid: "https://orcid.org/0000-0002-1284-9488"
+url: "https://github.com/Hjoon/multiplicative-learning"
+repository-code: "https://github.com/Hjoon/multiplicative-learning"
+license: MIT

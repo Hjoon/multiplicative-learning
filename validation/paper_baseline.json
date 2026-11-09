@@ -1,0 +1,29 @@
+{
+  "version": "paper-scalar-2026-11-09",
+  "numerical_backend": "scalar-individual",
+  "adopted_on": "2026-11-09",
+  "reference_file": "validation/paper_reference.json.gz",
+  "reference_sha256": "75b33cbb59739e9a7a854559f3098cc4b6568046522a7f3de977b78e04371532",
+  "reference_trials": 1861,
+  "status_counts": {
+    "completed": 1523,
+    "failed": 338
+  },
+  "expected_failures": {
+    "mixing_stress": 20,
+    "pinv_stability": 318
+  },
+  "paper_assets_sha256": {
+    "main.tex": "1e604c0dbf911aff7047cdf6a4279605787fc095dacb2d464326e67bff4b828a",
+    "main.pdf": "ffe4102eee74ec28bab9cd664f48dde2e4421a01f94a06cf3c824ad82f74d63b",
+    "Fig2.pdf": "ae6b3f2b57207c0e7ebc7d6986d56cd22351e6d96be4c253626639633392db16",
+    "Fig3.pdf": "6ececf4b2deedd92e060b8f9feaad5a4ba3ba43fc5cb94d34c2482380f1c568f",
+    "FigA1.pdf": "388b5d8858d6db3a22ceb7035ff4d5d65fed6dfb1b530faf30813c09eb8b67f6",
+    "FigA2.pdf": "a1713ebc8129eeae8204f95fbb3bc70bef92a85724a377282c4ba9cb8406294e",
+    "FigA3.pdf": "b729ee1bda1671e03d54021642be7d4bddaf91561b92c4c3b72cf929be5f38ba",
+    "FigA4.pdf": "c9d008a42c5143891da9ab63f00be921010b051684ad20d422f2ae8cbb1589ae"
+  },
+  "paper_results_attached": false,
+  "checkpoint_archive_included": false,
+  "environment_file": "validation/environment.json"
+}

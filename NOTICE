@@ -1,0 +1,15 @@
+This repository contains the authors' scalar research implementations and paper
+plotting tools, consolidated from the supplied experiment suite and target-
+propagation notebook. The MIT license applies to the software and documentation
+in this repository to the extent the contributors hold copyright.
+
+Contributions prepared by U.S. Government employees as part of their official
+duties remain not subject to U.S. copyright; this license does not assert
+copyright over those contributions.
+
+PyTorch, torchvision, NumPy, SciPy, pandas and Matplotlib are external
+dependencies, not relicensed here. Datasets are downloaded from their upstream
+providers and are not included in the repository or local minimal archive.
+
+Please cite the accompanying research when using the code. Citation is a
+scientific attribution request, not an additional license condition.

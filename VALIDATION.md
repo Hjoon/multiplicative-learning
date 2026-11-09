@@ -1,56 +1,64 @@
-# Validation
+# Paper reproduction validation
 
-Validated on 2026-11-06 using Python 3.12.15, PyTorch 2.5.1,
-torchvision 0.20.1, NumPy 2.5.3, pytest 9.1.1, macOS CPU.
-Exact tested dependencies are recorded in `requirements-tested.txt`.
+The paper uses the completed individual-run campaign. `validation/paper_baseline.json` freezes that version,
+its paper-asset hashes and its regression-reference identity. Exact package
+versions and runtime context are in `validation/environment.json`.
 
-`python -m pytest -q`: 4 passed. Checks cover:
+## Completed campaign
 
-- expansion and unique identities for all nine supplied experiment JSON files;
-- CE evaluation under deliberately saturated tanh outputs;
-- seven original optimizer/solver methods with synthetic resident datasets,
-  cached reruns, and CSV export;
-- all twelve control method/objective combinations, checkpoint writing and
-  completed-run cache reuse, using six synthetic updates each.
+The campaign completed on 2026-11-08 at 23:54 KST. All nine sweep processes
+finished; explicitly configured stress-test failures were retained as outcomes.
 
-No real datasets were downloaded. Full-budget accuracy, GPU behavior, historical
-result equivalence, and exact publication figure regeneration were not validated.
-Shared source/config SHA-256 digests are in `source_checksums.json`.
+| Scope | Unique trials | Completed | Expected numerical failures |
+| --- | ---: | ---: | ---: |
+| Eight adopted paper sweeps | 1,861 | 1,523 | 338 |
+| Including exploratory compute-solver sweep | 1,901 | 1,563 | 338 |
 
-The execution sandbox blocked OpenMP shared-memory creation; tests were run
-outside that sandbox with `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1`.
+The 338 paper failures comprise 318 direct-pinv linear-algebra failures in the
+solver-stability ablation and 20 nonfinite failures in the undamped mixing
+stress cases. Ridge has zero failures in the 600-trial solver-stability cohort.
+These recorded outcomes are not missing jobs or server execution errors.
 
-## Shannon GPU validation (2026-11-06)
+The original full-sweep DataLoader descriptor-exhaustion problem was corrected
+by isolating each trial in its own process. Completed runs/checkpoints were
+preserved during recovery. The final paper data come from the completed campaign.
 
-Five tests passed on the Shannon server with PyTorch 2.5.1 and torchvision
-0.20.1. Twelve synthetic CUDA method/objective combinations completed on an
-RTX 4090. TP/dTP uses the original sparse/logarithmic evaluation schedule.
+## Adopted baseline and verification
 
-A fresh MNIST ER-0 seed-0 run completed all 25,000 optimization steps:
+`validation/paper_reference.json.gz` contains settings, seed, execution core,
+reference run ID, completion/failure state, final step and best/final accuracy.
+The default verifier compares against this paper baseline. Its full-campaign
+exact-endpoint check reports 1,523 matching completed trials and 338 expected
+failures, with no missing reference trials. Reference capture is not an independent
+rerun: it freezes the campaign used for the manuscript.
 
-| Metric | Paper reference | Fresh run |
-| --- | --- | --- |
-| Final test accuracy | 88.91% | 88.91% |
-| Best test accuracy | 89.58% | 89.58% |
+Same-GPU repeat experiments confirmed full trajectory repeatability for
+representative Adam MSE, Adam CE and pinv runs.
 
-All 538 train/test evaluation rows have matching step/split indices. Across
-those rows, the maximum accuracy difference is 0.01 percentage points and the
-maximum MSE difference is 1.27e-7. Endpoint agreement does not imply bitwise
-trajectory agreement.
+Scientific code, seeds, budgets and mathematical hyperparameters were not changed
+while preparing these documentation, verification and plotting tools. Figures and
+tables are recomputed from the adopted individual-run metrics. Hardware/backend
+changes can affect per-seed trajectories and stress-test failures, so the execution
+context is part of the recorded baseline.
 
-The remaining full sweeps are running separately. The endpoint checker initially
-matched this one completed reference and marked 1,860 references missing; it did
-not declare the paper reproduced. See live server logs for current progress.
+## Reproduction tools
 
-## Long-sweep recovery
+`python -m paper_tools render` regenerates all six experimental figures, aggregate
+CSVs and manuscript LaTeX table bodies without notebook execution, parent-directory
+imports or server scripts. FigA3 is numerical
+stability and FigA4 is TP/DTP, matching the current manuscript labels. The Fig1
+conceptual diagram is outside the numerical reproduction pipeline.
 
-The first Fig.2 sweep stopped after 61 completed trials because sequential
-DataLoader construction in one process exhausted file descriptors (`Too many
-open files`, followed by `Pin memory thread exited unexpectedly`). This was an
-execution-resource failure during dataset preload, not a numerical ER failure.
+`python -m paper_tools archive` preserves the metric/configuration tree required
+for those plots and endpoint checks. It omits checkpoints, datasets, paper and
+figure attachments, redundant step logs and private runtime paths. Member and
+archive checksums are verified before the local archive is finalized.
 
-The CLI now starts each trial in a separate subprocess, releasing DataLoader
-workers, file descriptors and CUDA resources on exit. Training, data ordering,
-hyperparameters and scientific source identities are unchanged. Six server tests
-passed, including reuse of a completed cached trial through the isolated process.
-Completed runs and control checkpoints were preserved for restart.
+## Software checks
+
+Twelve server tests cover experiment expansion, objective semantics, synthetic
+training/cache behavior, process isolation, strict/ambiguous/backend-aware
+verification, failure-type checks, and the minimal archive's integrity/exclusion
+rules. Full CLI rendering and all 33 active experimental table rows are checked
+against the adopted manuscript statistics. See `validation/tool_checks.json` for
+the final check results and source hashes.
